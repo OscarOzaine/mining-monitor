@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+
+{% block meta_description %}
+Antminer Monitor, antminer, monitor, antmon, bitmain, bitcoin, litecoin, dash, 
+cryptocurrency, crypto, miner, mine, mining
+{% endblock %}
+{% block title %}Antminer Monitor {{ version }}{% endblock %}
+
+{% block body %}
+<div class="row">
+
+  <div class="col-sm-6">
+    <!-- <h2>Antminer Monitor {{ version }}</h2> -->
+
+    {{ miner }}
+	<br />
+
+	<legend>Save Miner</legend>
+	<form action="{{ url_for('save_miner', id=miner.id) }}" method="POST">
+		<div class="addminer_container">
+			<div class="row">
+			  <div class="col-md-10 mb-6">
+				<label for="model_id">
+				  IP Address:
+				</label>
+				<input required type="text" name="ip" value="{{ miner.ip }}">
+			  </div>
+			</div>
+			
+
+			<div class="row">
+			  <div class="col-md-10 mb-6">
+				<label for="model_id">
+				  Antminer Model
+				</label>
+				<select name="model_id" class="custom-select d-block w-100" id="model_id" required="" value="{{ miner.model.id }}">
+					<option disabled selected value> -- select an option --</option>
+					{%- for model in models|sort(attribute="model") %}
+					
+						{% if model.id == miner.model.id %}
+							<option value="{{ model.id }}" selected="true">{{ model.model }} - {{ model.description }}</option>
+						{% endif %}
+						
+						{% if title != source %}
+							<option value="{{ model.id }}">{{ model.model }} - {{ model.description }}</option>
+						{% endif %}
+						
+					{%- endfor %}
+				</select>
+
+			  </div>
+			  
+			</div>
+			<div class="row">
+			  <div class="col-md-10 mb-6">
+				<label for="remarks">
+				  Remarks:
+				</label>
+				<input type="text" name="remarks" value="{{ miner.remarks}}">
+			  </div>
+			</div>
+			
+			<div class="row">
+			  <div class="col-md-5 mb-3">
+				<input class="btn btn-primary btn-lg btn-block" type="submit" value="Add model">
+			  </div>
+			</div>
+		</div>
+	</form>
+	
+
+  </div>
+  
+  <!--
+  <fieldset style="width: 300px;">
+    <legend>Countdown</legend>
+    <b id="countdown"></b>
+  </fieldset>
+  -->
+
+</div>
+
+<br>
+
+{%- with messages = get_flashed_messages(with_categories=true) %}
+    {%- if messages %}
+        {%- for category, message in messages %}
+            <div class="{{ category }}">
+                <strong>{{ message }}</strong>
+            </div>
+        {%- endfor %}
+    {%- endif %}
+{%- endwith %}
+
+
+{% endblock %}
+
