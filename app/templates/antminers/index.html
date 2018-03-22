@@ -17,53 +17,62 @@ cryptocurrency, crypto, miner, mine, mining
     </button>
 
     <div id="demo" class="collapse">
-      <fieldset name="add">
-        <legend>Add Miner</legend>
+      
+        <br />
         <form action="{{ url_for('add_miner') }}" method="POST">
-            <div class="addminer_container">
-                <div class="row">
-                  <div class="col-md-10 mb-6">
-                    <label for="model_id">
-                      IP Address:
-                    </label>
-                    <input required type="text" name="ip">
-                  </div>
-                </div>
-                
+            <div class="row">
+              <div class="col-md-10 mb-6">
+                <label for="model_id">
+                  <strong>IP Address:</strong>
+                </label>
+                <input required class="form-control" type="text" name="ip">
+              </div>
+            </div>
 
-                <div class="row">
-                  <div class="col-md-10 mb-6">
-                    <label for="model_id">
-                      Antminer Model
-                    </label>
-                    <select name="model_id" class="custom-select d-block w-100" id="model_id" required="">
-                      <option disabled selected value> -- select an option --</option>
-                      {%- for model in models|sort(attribute="model") %}
-                          <option value="{{ model.id }}">{{ model.model }} - {{ model.description }}</option>
-                      {%- endfor %}
-                    </select>
+            <br>
 
-                  </div>
-                  
-                </div>
-                <div class="row">
-                  <div class="col-md-10 mb-6">
-                    <label for="remarks">
-                      Remarks:
-                    </label>
-                    <input type="text" name="remarks">
-                  </div>
-                </div>
-                
-                <div class="row">
-                  <div class="col-md-5 mb-3">
-                    <input class="btn btn-primary btn-lg btn-block" type="submit" value="Add model">
-                  </div>
-                </div>
+            <div class="row">
+              <div class="col-md-10 mb-6">
+                <label for="model_id">
+                  <strong>Antminer Model</strong>
+                </label>
+
+                <select name="model_id" class="custom-select d-block w-100" id="model_id" required="">
+                  <option disabled selected value> -- select an option --</option>
+                  {%- for model in models|sort(attribute="model") %}
+
+                    
+                    <option value="{{ model.id }}">
+                      {{ model.model }} - {{ model.description }}
+                    </option>
+                    
+                  {%- endfor %}
+                </select>
+
+              </div>
+              
+            </div>
+
+            <br />
+
+            <div class="row">
+              <div class="col-md-10 mb-6">
+                <label for="remarks">
+                  <strong>Remarks:</strong>
+                </label>
+                <input class="form-control" type="text" name="remarks">
+              </div>
+            </div>
+
+            <br />
+
+            <div class="row">
+              <div class="col-md-5 mb-3">
+                <input class="btn btn-primary btn-lg btn-block" type="submit" value="Add model">
+              </div>
             </div>
         </form>
-    </fieldset>
-    </div>
+    
   </div>
   
   <!--
@@ -86,6 +95,8 @@ cryptocurrency, crypto, miner, mine, mining
         {%- endfor %}
     {%- endif %}
 {%- endwith %}
+
+<br /><br />
 
 {%- if inactive_miners %}
     <fieldset name="inactive_miner_list">
@@ -118,8 +129,13 @@ cryptocurrency, crypto, miner, mine, mining
                   </td>
                   <td>
                     <a href={{ url_for('delete_miner', id=inactive_miner.id) }}>
-                      <img src="/static/images/assets/remove.png"></img>
+                      <img class="template-icons" src="/static/open-iconic/svg/x.svg" alt="x">
                     </a>
+
+                    <a style="margin-left: 0.5em;" href={{ url_for('edit_miner', id=inactive_miner.id) }}>
+                      <img class="template-icons" src="/static/open-iconic/svg/pencil.svg" alt="pencil">
+                    </a>
+                    
                   </td>
               </tr>
               {%- endfor %}
@@ -209,17 +225,14 @@ cryptocurrency, crypto, miner, mine, mining
                     <a target="_blank" href="/{{ active_miner.ip }}/stats">Stats</a></td>-->
                 <td>
 				
-					<a href={{ url_for('delete_miner', id=active_miner.id) }}>
-						
-						<img class="template-icons" src="/static/open-iconic/svg/x.svg" alt="x">
-						
-						<!--<img src="/static/images/assets/remove.png"></img>-->
-					</a>
-					
-					<a style="margin-left: 0.5em;" href={{ url_for('edit_miner', id=active_miner.id) }}>
-						<img class="template-icons" src="/static/open-iconic/svg/pencil.svg" alt="pencil">
-					</a>
-				  
+                  <a href={{ url_for('delete_miner', id=active_miner.id) }}>
+                    <img class="template-icons" src="/static/open-iconic/svg/x.svg" alt="x">
+                  </a>
+
+                  <a style="margin-left: 0.5em;" href={{ url_for('edit_miner', id=active_miner.id) }}>
+                    <img class="template-icons" src="/static/open-iconic/svg/pencil.svg" alt="pencil">
+                  </a>
+
                 </td>
             </tr>
 			<tr>

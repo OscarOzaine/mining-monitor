@@ -36,6 +36,7 @@ def miners():
     hash_rates = {}
     hw_error_rates = {}
     uptimes = {}
+
     total_hash_rate_per_model = {
         "L3+": {"value": 0, "unit": "MH/s" },
         "S7": {"value": 0, "unit": "GH/s" },
@@ -187,7 +188,7 @@ def antminers():
 	# Init variables
 	start = time.clock()
 	miners = Miner.query.all()
-	print 'minsers'
+	print 'miners'
 	print miners
 	models = MinerModel.query.all()
 	active_miners = []
@@ -333,10 +334,11 @@ def antminers():
 
 	end = time.clock()
 	loading_time = end - start
+
 	print 'workers'
 	print workers
 
-	return render_template('antminers.html',
+	return render_template('/antminers/index.html',
 	   version=__version__,
 	   models=models,
 	   active_miners=active_miners,
@@ -355,6 +357,7 @@ def antminers():
 	
 @app.route('/add', methods=['POST'])
 def add_miner():
+
 	miner_ip = request.form['ip']
 	miner_model_id = request.form.get('model_id')
 	miner_remarks = request.form['remarks']
@@ -373,45 +376,27 @@ def add_miner():
 
 @app.route('/delete/<id>')
 def delete_miner(id):
+
     miner = Miner.query.filter_by(id=int(id)).first()
     db.session.delete(miner)
     db.session.commit()
+
     return redirect(url_for('miners'))
 
 	
 @app.route('/edit/<id>')
 def edit_miner(id):
+
 	miner = Miner.query.filter_by(id=int(id)).first()
 	models = MinerModel.query.all()
-	print 'miner'
-	print miner
-	#db.session.delete(miner)
 	
-	#db.session.commit()
-	return render_template('edit.html',
+	return render_template('/antminers/edit.html',
 		miner=miner,
 		models=models,
-		#version=__version__,
-		#models=models,
-		#active_miners=active_miners,
-		#inactive_miners=inactive_miners,
-		#workers=workers,
-		#miner_chips=miner_chips,
-		#temperatures=temperatures,
-		#fans=fans,
-		#hash_rates=hash_rates,
-		#hw_error_rates=hw_error_rates,
-		#uptimes=uptimes,
-		#total_hash_rate_per_model=total_hash_rate_per_model_temp,
-		#loading_time=loading_time,
-		#miner_errors=miner_errors,
 	);
-	#return redirect(url_for('miners'))
 
 @app.route('/save/<id>', methods=['POST'])
 def save_miner(id):
-	
-	
 	
 	miner_ip = request.form['ip']
 	miner_model_id = request.form.get('model_id')
@@ -423,28 +408,5 @@ def save_miner(id):
 	miner.remarks = miner_remarks
 	db.session.add(miner)
 	db.session.commit()
-	#miner.save()
+	
 	return redirect(url_for('miners'))
-	
-	#db.session.delete(miner)
-	
-	#return redirect(url_for('miners'))
-
-'''
-@app.route('/antminers/save', methods=['POST'])
-def save_miner():
-
-	miner_ip = request.form['ip']
-	miner_model_id = request.form.get('model_id')
-	miner_remarks = request.form['remarks']
-	
-	exists = Miner.query.filter_by(ip=request.form['ip'], model_id=request.form.get('model_id')).first()
-	if exists:
-		emp = Miner.objects.get(ip=request.form['ip'], model_id=request.form.get('model_id'))
-		emp.name = 'Somename'
-		emp.save()
-		
-		return redirect(url_for('miners'))
-		
-
-'''
